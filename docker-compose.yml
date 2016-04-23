@@ -1,0 +1,38 @@
+nginx:
+    image: nginx:1.9.4
+    ports:
+        - "80:80"
+    links:
+        - php
+    volumes:
+        - ./SYMFONY_DIRECTORY:/var/www/symfony
+        - ./nginx-host.conf:/etc/nginx/conf.d/hosts.conf
+    container_name: nginx
+
+php:
+    build: images/php
+    links:
+        - mysql
+    volumes:
+        - ./SYMFONY_DIRECTORY:/var/www/symfony
+    container_name: php
+
+mysql:
+    image: mysql:5.5.45
+    environment:
+        MYSQL_ROOT_PASSWORD: qqq
+        MYSQL_DATABASE: SYMFONY_DATABASE_NAME
+        MYSQL_USER: SYMFONY_DATABASE_USER
+        MYSQL_PASSWORD: qqq
+    container_name: mysql
+
+phpmyadmin:
+    image: nazarpc/phpmyadmin
+    ports:
+        - "1234:80"
+    links:
+        - mysql
+    container_name: phpmyadmin
+
+
+
